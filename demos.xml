@@ -4,7 +4,9 @@
    <type>toolbox</type>
    <icon>HelpIcon.DEMOS</icon>
    <website/>
-   <description/>
+   <description>Stock prices: Brownian Motion, Geometric Brownian motion, Merton model, Heston model.
+Bond Rates: Vasicek interest rate model, Cox Ingersoll Ross model
+Utilities: Quote inflow order, Information driven bars.</description>
    <demosection>
       <label>stochastic-processes</label>
       <demoitem>
