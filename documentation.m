@@ -75,9 +75,8 @@ sim = randomProcesses("n", 5, "T", 252, "h", 1, "s0", 100);
 % he/she can input the following command in the Matlab console. 
 
 doc("randomProcesses")
-%% Stochastic Methods implemented
-% Stock Prices
-% Brownian Motion
+
+%% Brownian Motion
 % This method implements  a discrete time stochastic process for a Brownian 
 % motion that satisfies the following stochastic differential equation (SDE):
 % 
@@ -95,13 +94,13 @@ doc("randomProcesses")
 % 
 % 
 % The name-value arguments for the method are: 
-%% 
+%
 % * *mu*(float): Historical means of returns
 % * *sigma*(float): Historical volatility of returns
 % * *sto_vol*(logical): Optional argument for the helper that states if the 
 % volatility should be constant of stochastic in the data generation process. 
 % Default is *false* for this process.
-%% 
+%
 % Usage:
 
 % Generate the prices paths and save the variable
@@ -112,7 +111,8 @@ plot(brownian_prices)
 title('Assets simulated prices for Brownian Motion')
 ylabel('Prices')
 xlabel('Time step')
-% Geometric Brownian Motion
+
+%% Geometric Brownian Motion
 % The Geometric Brownian Motion (GBM) was popularized by Fisher Black and Myron 
 % Scholes in their paper The Pricing of Options and Corporate Liabilities. In 
 % that paper, they derive the Black Scholes equation. The GBM is essentially a 
@@ -131,16 +131,14 @@ xlabel('Time step')
 % t+\sigma \left(k\right)X\left(k-1\right)W\\\textrm{where}\;\\W=Z\left(k\right)\sqrt{\Delta 
 % t}\;\\Z\left(k\right)\;\textrm{is}\;\textrm{white}\;\textrm{noise}\;\end{array}$$
 % 
-% 
-% 
 % The name-value arguments for the method are: 
-%% 
+%
 % * *mu*(float): Historical means of returns
 % * *sigma*(float): Historical volatility of returns
 % * *sto_vol*(logical): Optional argument for the helper that states if the 
 % volatility should be constant of stochastic in the data generation process. 
 % Default is *true* for this process.
-%% 
+
 % Usage:
 
 % Generate the prices paths and save the variable
@@ -151,7 +149,8 @@ plot(gbm_prices)
 title('Assets simulated prices for Geometric Brownian Motion')
 ylabel('Prices')
 xlabel('Time step')
-% Merton’s Jump-Diffusion Model
+
+%% Merton’s Jump-Diffusion Model
 % In essence, this is a process that allows for a positive probability of a 
 % stock price change of extraordinary magnitude, no matter how small the time 
 % interval between successive observations. More formally, this is a Poisson-driven 
@@ -177,14 +176,14 @@ xlabel('Time step')
 % 
 % 
 % The name-value arguments for the method are: 
-%% 
+%
 % * *lambda*(double): Moment of arrival of an important piece of information.
 % * *mu*(double): Historical mean of returns.
 % * *sigma*(double): Historical volatility of returns.
 % * *sto_vol*(logical): Optional argument for the helper that states if the 
 % volatility should be constant of stochastic in the data generation process. 
 % Default is *true* for this process.
-%% 
+%
 % Usage:
 
 % Generate the prices paths and save the variable
@@ -197,7 +196,8 @@ plot(merton_prices)
 title('Assets simulated prices for the Merton’s Jump-Diffusion model')
 ylabel('Prices')
 xlabel('Time step')
-% Heston Model
+
+%% Heston Model
 % The original Geometric Brownian Motion stochastic process assumes that volatility 
 % over time is constant. In the early 1990s, Steven Heston relaxed this assumption 
 % and extended the Geometric Brownian Motion model to include stochastic volatility. 
@@ -229,7 +229,7 @@ xlabel('Time step')
 % 
 % 
 % The name-value arguments for the method are:
-%% 
+%
 % * *rf*(double): Risk-free interest rate, theoretical rate on an asset carrying 
 % no risk. Default value is 0.02
 % * *theta*(double): Long term price variance. Default value is 1
@@ -239,7 +239,7 @@ xlabel('Time step')
 % * *sto_vol*(logical): Optional argument for the helper that states if the 
 % volatility should be constant of stochastic in the data generation process. 
 % Default is *false* for this process.
-%% 
+%
 % Usage:
 
 % Generate the prices paths and save the variable
@@ -251,8 +251,8 @@ plot(heston_prices)
 title('Assets simulated prices for the Heston model')
 ylabel('Prices')
 xlabel('Time step')
-% Bond Rates
-% Vasicek interest rate model
+
+%% Vasicek interest rate model
 % The Vasicek interest rate model (or merely the Vasicek model) is a mathematical 
 % method of modeling interest rate movements. The model describes the evolution 
 % of an interest rate as a factor composed of market risk, time, and equilibrium 
@@ -277,7 +277,7 @@ xlabel('Time step')
 % 
 % 
 % The name-value arguments for the method are:
-%% 
+% 
 % * *mu*(double): Long term mean level. All future trajectories of s will evolve 
 % around a mean level μ in the long run. Default value is 0
 % * *sigma*(double): Instantaneous volatility, measures instant by instant the 
@@ -288,7 +288,7 @@ xlabel('Time step')
 % * *sto_vol*(logical): Optional argument for the helper that states if the 
 % volatility should be constant of stochastic in the data generation process. 
 % Default is *false* for this process.
-%% 
+%
 % Usage:
 
 % Create the object for the rate series
@@ -305,7 +305,8 @@ plot(vas_rates)
 title('Rates simulated for the Vasicek interest rate model')
 ylabel('Rates')
 xlabel('Time step')
-% Cox-Ingersoll-Ross interest rate model
+
+%% Cox-Ingersoll-Ross interest rate model
 % The Cox-Ingersoll-Ross model (CIR) is a mathematical formula used to model 
 % interest rate movements and is driven by a sole source of market risk. It is 
 % used as a method to forecast interest rates.  The stochastic process is often 
@@ -332,7 +333,7 @@ xlabel('Time step')
 % 
 % 
 % The name-value arguments for the method are:
-%% 
+% 
 % * *mu*(double): Long term mean level. All future trajectories of s will evolve 
 % around a mean level μ in the long run. Default value is 0
 % * *sigma*(double): Instantaneous volatility, measures instant by instant the 
@@ -343,7 +344,7 @@ xlabel('Time step')
 % * *sto_vol*(logical): Optional argument for the helper that states if the 
 % volatility should be constant of stochastic in the data generation process. 
 % Default is *false* for this process.
-%% 
+%
 % Usage:
 
 % Generate the prices paths and save the variable
@@ -362,24 +363,24 @@ xlabel('Time step')
 % of Trading Volume, Matthijs Lof_).
 % 
 % 
-% Order Flow
+%% Order Flow
 % Volume generation process based on the number of informed traders and the 
 % number of liquidity seekers for the market of a security. To check the details 
 % of the generation process please see:
-%% 
+%
 % * Lof, Matthijs and van Bommel, Jos, Asymmetric Information and the Distribution 
 % of Trading Volume (May 29, 2019). Available at SSRN: <https://ssrn.com/abstract=2726187 
 % https://ssrn.com/abstract=2726187> or <https://dx.doi.org/10.2139/ssrn.2726187 
 % http://dx.doi.org/10.2139/ssrn.2726187>
-%% 
+%
 % *Usage in Matlab:*
 % 
 % The name-value arguments for the method are:
-%% 
+%
 % * *eta*(double): Proportion of informed trade. Default value is 0.1
 % * *M*(double): Proportion of liquidity seekers. Default value is 0.3
 % * *market_prices*(matrix): tick prices for an financial instrument.
-%% 
+%
 % Usage:
 
 volumes = sim.order_flow("eta", 0.15, "market_prices", heston_prices(:, 1));
@@ -387,13 +388,14 @@ bar(volumes,'EdgeColor','none');
 ylabel({'Volume'});
 xlabel({'Time Step'});
 title({'Generated Volumes for a Heston model'});
-% Information Driven Bars
+
+%% Information Driven Bars
 % The following descriptions came from the book <https://www.bookdepository.com/Advances-Financial-Machine-Learning-Marcos-Lopez-de-Prado/9781119482086?ref=grid-view&qid=1590373792725&sr=1-1 
 % Advances in Financial Machine Learning> by Marcos López de Prado
-% Tick Imbalance Bars
-% Consider a sequence of ticks${\left\lbrace \left(p_t \;,v_t \;\right)\right\rbrace 
+%% Tick Imbalance Bars
+% Consider a sequence of ticks ${\left\lbrace \left(p_t \;,v_t \;\right)\right\rbrace 
 % }_{t=1,\ldotp \ldotp \ldotp ,T}$ , where $p_t$ is the price associated with 
-% tick $t$ and $v_t$is the volume associated with tick $t$. The so-called tick 
+% tick $t$ and $v_t$ is the volume associated with tick $t$. The so-called tick 
 % rule defines a sequence ${\left\lbrace b_t \right\rbrace }_{t=1,\ldotp \ldotp 
 % \ldotp ,T}$ where
 % 
@@ -408,36 +410,35 @@ title({'Generated Volumes for a Heston model'});
 % rule) exceeds a given threshold. Next, let us discuss the procedure to determine 
 % $T$. 
 % 
-% First, we define the tick imbalance at time T as
+% First, we define the tick imbalance at time $T$ as
 % 
 % $$\theta_t =\sum_{t=1}^T b_t$$
 % 
 % Second, we compute the expected value of $\theta_T$ at the beginning of the 
-% bar,$E_0 \left\lbrack \theta_T \right\rbrack =E_0 \left\lbrack T\right\rbrack 
+% bar, $E_0 \left\lbrack \theta_T \right\rbrack =E_0 \left\lbrack T\right\rbrack 
 % \left(P\left\lbrack b_t =1\right\rbrack -P\left\lbrack b_t =-1\right\rbrack 
-% \right)$, where $E_0 \left\lbrack T\right\rbrack$is the *expected size of the 
+% \right)$, where $E_0 \left\lbrack T\right\rbrack$ is the *expected size of the 
 % tick bar*, $P\left\lbrack b_t =1\right\rbrack$ is the unconditional probability 
-% that a tick is *classified as a buy*, and $P\left\lbrack b_t =-1\right\rbrack$is 
+% that a tick is *classified as a buy*, and $P\left\lbrack b_t =-1\right\rbrack$ is 
 % the unconditional probability that a tick is *classified as a sell*. Since $P\left\lbrack 
 % b_t =1\right\rbrack +P\left\lbrack b_t =-1\right\rbrack =1$, then $E_0 \left\lbrack 
 % \theta_T \right\rbrack =E_0 \left\lbrack T\right\rbrack \left(2P\left\lbrack 
 % b_t =1\right\rbrack -1\right)$
 % 
 % In practice, we can estimate $E_0 \left\lbrack T\right\rbrack$ as an exponentially 
-% weighted moving average of $T$values from prior bars, and $\left(2P\left\lbrack 
-% b_t =1\right\rbrack -1\right)$as an exponentially weighted moving average of 
+% weighted moving average of $T$ values from prior bars, and $\left(2P\left\lbrack 
+% b_t =1\right\rbrack -1\right)$ as an exponentially weighted moving average of 
 % $b_t$ values from prior bars.
 % 
 % Third, we define a tick imbalance bar (TIB) as a $T^*$ - contiguous subset 
 % of ticks such that the following condition is met:
 % 
-% $$T^* =\underset{T}{\textrm{argmin}} \;\left\lbrace \left|\theta_T \right|\ge 
-% E_0 \left\lbrack T\right\rbrack \;\left|2P\left\lbrack b_t =1\right\rbrack -1\right|\right\rbrace$$
-% 
+% <<tib_imbalance.png>>
+%
 % where the size of the expected imbalance is implied by $\left|2P\left\lbrack 
 % b_t =1\right\rbrack -1\right|$. When $\theta_T$ is more imbalanced than expected, 
-% a low $T$will satisfy these conditions. Accordingly, TIB's are produced more 
-% frequently under the presence of informed trading* (_asymmetric information 
+% a low $T$ will satisfy these conditions. Accordingly, TIB's are produced more 
+% frequently under the presence of informed trading (_asymmetric information 
 % that triggers one-side trading_). In fact, we can understand TIBs as buckets 
 % of trades containing equal amounts of information (regardless of the volumes, 
 % prices, or ticks traded).
@@ -445,12 +446,12 @@ title({'Generated Volumes for a Heston model'});
 % *Usage in Matlab:*
 % 
 % The name-value arguments for the method are:
-%% 
+% 
 % * *ticks*(matrix): tick market prices for a security with the corresponding 
 % volumes. There is no default value for this parameter.
 % * *window*(double): number of prior observations to use for the sampling. 
 % Default value is 15.
-%% 
+%
 % Usage:
 
 % all create a matrix of prices and volumes
@@ -460,13 +461,13 @@ tick_prices = [heston_prices(:, 1) volumes];
 tib = sim.tib("ticks", tick_prices, "window", 20);
 % ploting the resutls
 priceandvol(tib);
-% Volume and Dollar Imbalance Bars
+%% Volume and Dollar Imbalance Bars
 % The idea behind volume imbalance bars (VIB's) and dollar imbalance bars (DIB's) 
 % is to extend the concept of tick imbalance bars (TIB's). We would like to sample 
 % bars when volume or dollar imbalances diverge from our expectations. Based on 
 % the same notions of tick rule and boundary condition $b_0$ as we discussed for 
 % TIB's, we will define a procedure to determine the index of the next sample, 
-% $T$. First, we define the imbalance at time $T$as:
+% $T$. First, we define the imbalance at time $T$ as:
 % 
 % $$b_t =\sum_{t=1}^T b_t v_t$$
 % 
@@ -498,18 +499,16 @@ priceandvol(tib);
 % v_t \right\rbrack \right)$$
 % 
 % In practice, we can estimate $E_0 \left\lbrack T\right\rbrack \;$as an exponentially 
-% weighted moving average of $T$values from prior bars, and $\left(2v^+ -E_0 \left\lbrack 
-% v_t \right\rbrack \right)$as an exponentially weighted moving average of $v_t 
-% b_t$ values from prior bars. Third, we define VIB or DIB as a $T^*$- contiguous 
+% weighted moving average of $T$ values from prior bars, and $\left(2v^+ -E_0 \left\lbrack 
+% v_t \right\rbrack \right)$ as an exponentially weighted moving average of $v_t 
+% b_t$ values from prior bars. Third, we define VIB or DIB as a $T^*$ - contiguous 
 % subset of ticks such that the following condition is met:
 % 
-% $$T^* =\underset{T}{\textrm{argmin}} \left\lbrace \left|\theta_T \right|\ge 
-% E_0 \left\lbrack T\right\rbrack \left|2v^+ -E_0 \left\lbrack v_t \right\rbrack 
-% \right|\right\rbrace$$
+% <<vib_imbalance.png>>
 % 
 % where the size of the expected imbalance is implied by $\left|2v^+ -E_0 \left\lbrack 
 % v_t \right\rbrack \right|$. When $\theta_T$ is more imbalanced than expected, 
-% a low $T$will satisfy these conditions. This is the information-based analogue 
+% a low $T$ will satisfy these conditions. This is the information-based analogue 
 % of volume and dollar bars, and like its predecessor, it addresses the same concerns 
 % regarding tick fragmentation and outliers. Furthermore, *it also addresses the 
 % issue of corporate actions*, _because the above procedure does not rely on a 
@@ -518,12 +517,12 @@ priceandvol(tib);
 % *Usage in Matlab:*
 % 
 % The name-value arguments for the method are:
-%% 
+%
 % * *ticks*(matrix): tick market prices for a security with the corresponding 
 % volumes. There is no default value for this parameter.
 % * *window*(double): number of prior observations to use for the sampling. 
 % Default value is 15.
-%% 
+%
 % Usage:
 
 % all create a matrix of prices and volumes
@@ -544,7 +543,7 @@ priceandvol(dib);
 % Scikit-Learn> of Matlab for Quantitative finance. 
 %% 
 % *Disclaimer*
-%% 
+% 
 % * This article is not intended to provide any investment recommendation by 
 % any means. It serves solely with an educational purpose.
 % * The views expressed in this document belong to the author and do not necessarily 
