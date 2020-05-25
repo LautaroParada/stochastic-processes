@@ -1,6 +1,8 @@
 # Stochastic Valuation Processes
+[![View stochastic-processes on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/76023-stochastic-processes)
 
 For a more pleasant version of the documentation, please visit the File Exchange site for Matlab
+https://www.mathworks.com/matlabcentral/fileexchange/76023-stochastic-processes
 
 **Contents**
 
