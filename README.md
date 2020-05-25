@@ -15,12 +15,12 @@ For a more pleasant version of the documentation, please visit the File Exchange
     - [Bond Rates](#bond-rates)
         - [Vasicek interest rate model](#vasicek-interest-rate-model)
         - [Cox-Ingersoll-Ross interest rate model](#cox-ingersoll-ross-interest-rate-model)
-4. Utilities
-    - Order Flow
-    - Information Driven Bars
-        - Tick Imbalance Bars
-        - Volume and Dollar Imbalance Bars
-5. Future Work
+4. [Utilities](#utilities)
+    - [Order Flow](#order-flow)
+    - [Information Driven Bars](#information-driven-bars)
+        - [Tick Imbalance Bars](#tick-imbalance-bars)
+        - [Volume and Dollar Imbalance Bars](#volume-or-dollar-imbalance-bars)
+5. [Future Work](#future-work)
 
 ##Rationale
 This toolbox packages a set of stochastic processes for prices and rates simulation, aiming to create a synthetic dataset for quantitative back-testing of trading strategies and asset allocations methods. 
@@ -261,3 +261,70 @@ ylabel('Rates')
 xlabel('Time step')
 ```
 ![img18](img/img18.png)
+
+#Utilities
+Along with the stochastic models for stock prices and interest rates, several utility methods were implemented. Such as Information driven bars (see Advances in Financial Machine Learning by Marcos López de Prado), volume generation, or order flow for each stock (see Asymmetric Information and the Distribution of Trading Volume, Matthijs Lof).
+
+##Order Flow
+Volume generation process based on the number of informed traders and the number of liquidity seekers for the market of a security. To check the details of the generation process please see:
+
+- Lof, Matthijs and van Bommel, Jos, Asymmetric Information and the Distribution of Trading Volume (May 29, 2019). Available at SSRN: https://ssrn.com/abstract=2726187 or http://dx.doi.org/10.2139/ssrn.2726187
+
+**Usage in Matlab:**
+The name-value arguments for the method are:
+
+- **eta**(double): Proportion of informed trade. Default value is 0.1
+- **M**(double): Proportion of liquidity seekers. Default value is 0.3
+- **market_prices**(matrix): tick prices for an financial instrument.
+
+Usage:
+```
+volumes = sim.order_flow("eta", 0.15, "market_prices", heston_prices(:, 1));
+bar(volumes,'EdgeColor','none');
+ylabel({'Volume'});
+xlabel({'Time Step'});
+title({'Generated Volumes for a Heston model'});
+```
+![img19](img/img19.png)
+
+##Information Driven bars
+
+For a complete description please Advances in Financial Machine Learning by Marcos López de Prado
+
+###Tick Imbalance bars
+
+```
+% all create a matrix of prices and volumes
+tick_prices = [heston_prices(:, 1) volumes];
+% the output is an OHLCV dataset
+tib = sim.tib("ticks", tick_prices, "window", 20);
+% ploting the resutls
+priceandvol(tib);
+```
+
+![img20](img/img20.png)
+
+
+###Volume or Dollar Imbalance bars
+
+```
+% all create a matrix of prices and volumes
+tick_prices = [heston_prices(:, 1) volumes];
+% the output is an OHLCV dataset - Dollar Imbalance Bars. If the user wants
+% the Volume information bars, please change the method name to vib.
+dib = sim.dib("ticks", tick_prices, "window", 20);
+% ploting the resutls
+priceandvol(dib);
+```
+
+![img21](img/img21.png)
+
+#Future Work
+For the next versions of the toolbox, is intended to add: Systemic risk Indicators, Volatility Estimators (for Low and High frequency data points), Statistical Tests for rejecting the Efficient Market Hypotheses, ETF builders, Asset Allocation methods, and Microstructural features. Basically, this toolbox is intended to be the Scikit-Learn of Matlab for Quantitative finance. 
+
+
+**Disclaimer**
+
+- This article is not intended to provide any investment recommendation by any means. 
+- It serves solely with an educational purpose.
+- The views expressed in this document belong to the author and do not necessarily reflect the organization's view he is affiliated with.
