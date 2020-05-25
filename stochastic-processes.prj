@@ -1,13 +1,15 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration file="C:\Users\lauta\OneDrive\Lautaro\2020\GitHub\Matlab\stochastic-processes\stochastic-processes.prj" location="C:\Users\lauta\OneDrive\Lautaro\2020\GitHub\Matlab\stochastic-processes" name="stochastic-processes" target="target.toolbox" target-name="Package Toolbox">
+  <configuration build-checksum="135383513" file="C:\Users\lauta\OneDrive\Lautaro\2020\GitHub\Matlab\stochastic-processes\stochastic-processes.prj" location="C:\Users\lauta\OneDrive\Lautaro\2020\GitHub\Matlab\stochastic-processes" name="stochastic-processes" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>stochastic-processes</param.appname>
     <param.authnamewatermark>Lautaro Parada Opazo</param.authnamewatermark>
     <param.email>lautaro.parada.opazo@gmail.com</param.email>
     <param.company />
     <param.summary>Stochastic Valuation models for stocks and bond rates.</param.summary>
-    <param.description />
+    <param.description>Stock prices: Brownian Motion, Geometric Brownian motion, Merton model, Heston model.
+Bond Rates: Vasicek interest rate model, Cox Ingersoll Ross model
+Utilities: Quote inflow order, Information driven bars.</param.description>
     <param.screenshot>C:\Users\lauta\OneDrive\Lautaro\2019\Matlab\projects\AlphaVantage\closePrices.png</param.screenshot>
-    <param.version>1.0</param.version>
+    <param.version>1.0.5</param.version>
     <param.output>${PROJECT_ROOT}\stochastic-processes.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -36,15 +38,25 @@
 .git
 .gitattributes
 .gitignore
-README.md</param.exclude.filters>
+README.md
+documentation2.mlx</param.exclude.filters>
     <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
     <param.examples>&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;examples&gt;
    &lt;exampleCategory name="stochastic-processes"&gt;
       &lt;example name="documentation" type="html"&gt;
          &lt;file type="source"&gt;/html/documentation.html&lt;/file&gt;
-         &lt;file type="main"&gt;/documentation.mlx&lt;/file&gt;
-         &lt;file type="thumbnail"/&gt;
+         &lt;file type="main"&gt;/documentation.m&lt;/file&gt;
+         &lt;file type="thumbnail"&gt;/html/documentation.png&lt;/file&gt;
+         &lt;file type="image"&gt;/html/documentation_01.png&lt;/file&gt;
+         &lt;file type="image"&gt;/html/documentation_02.png&lt;/file&gt;
+         &lt;file type="image"&gt;/html/documentation_03.png&lt;/file&gt;
+         &lt;file type="image"&gt;/html/documentation_04.png&lt;/file&gt;
+         &lt;file type="image"&gt;/html/documentation_05.png&lt;/file&gt;
+         &lt;file type="image"&gt;/html/documentation_06.png&lt;/file&gt;
+         &lt;file type="image"&gt;/html/documentation_07.png&lt;/file&gt;
+         &lt;file type="image"&gt;/html/documentation_08.png&lt;/file&gt;
+         &lt;file type="image"&gt;/html/documentation_09.png&lt;/file&gt;
       &lt;/example&gt;
    &lt;/exampleCategory&gt;
 &lt;/examples&gt;</param.examples>
@@ -76,8 +88,6 @@ README.md</param.exclude.filters>
       <param.authnamewatermark />
       <param.email />
       <param.company />
-      <param.description />
-      <param.version />
       <param.output />
       <param.products.name />
       <param.products.id />
@@ -113,8 +123,10 @@ README.md</param.exclude.filters>
     <fileset.rootfiles>
       <file>${PROJECT_ROOT}\@randomProcesses</file>
       <file>${PROJECT_ROOT}\demos.xml</file>
-      <file>${PROJECT_ROOT}\documentation.mlx</file>
+      <file>${PROJECT_ROOT}\documentation.html</file>
+      <file>${PROJECT_ROOT}\documentation.m</file>
       <file>${PROJECT_ROOT}\html</file>
+      <file>${PROJECT_ROOT}\img</file>
       <file>${PROJECT_ROOT}\LICENSE</file>
     </fileset.rootfiles>
     <fileset.depfun.included />
