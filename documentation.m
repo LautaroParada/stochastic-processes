@@ -428,10 +428,11 @@ title({'Generated Volumes for a Heston model'});
 % 
 % Third, we define a tick imbalance bar (TIB) as a $T^*$ - contiguous subset 
 % of ticks such that the following condition is met:
+%
 % 
-% $$T^* =\underset{T}{\textrm{argmin}} \;\left\lbrace \left|\theta_T \right|\ge 
-% E_0 \left\lbrack T\right\rbrack \;\left|2P\left\lbrack b_t =1\right\rbrack -1\right|\right\rbrace$$
 % 
+% <<tib_imbalance.png>>
+%
 % where the size of the expected imbalance is implied by $\left|2P\left\lbrack 
 % b_t =1\right\rbrack -1\right|$. When $\theta_T$ is more imbalanced than expected, 
 % a low $T$ will satisfy these conditions. Accordingly, TIB's are produced more 
@@ -501,9 +502,7 @@ priceandvol(tib);
 % b_t$ values from prior bars. Third, we define VIB or DIB as a $T^*$ - contiguous 
 % subset of ticks such that the following condition is met:
 % 
-% $$T^* =\underset{T}{\textrm{argmin}} \left\lbrace \left|\theta_T \right|\ge 
-% E_0 \left\lbrack T\right\rbrack \left|2v^+ -E_0 \left\lbrack v_t \right\rbrack 
-% \right|\right\rbrace$$
+% <<vib_imbalance.png>>
 % 
 % where the size of the expected imbalance is implied by $\left|2v^+ -E_0 \left\lbrack 
 % v_t \right\rbrack \right|$. When $\theta_T$ is more imbalanced than expected, 
