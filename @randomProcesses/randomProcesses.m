@@ -1,8 +1,50 @@
 
 classdef randomProcesses
-    % This class generates random prices from a desired model, based on the
-    % initial conditions defined at the moment of the initialization of the
-    % class
+        % Rationale
+        % This toolbox packages a set of stochastic processes for prices and 
+        % rates simulation, aiming to create a synthetic dataset for 
+        % quantitative back-testing of trading strategies and asset allocations
+        % methods.
+        % Simulating synthetic stock prices and bond rates provides an 
+        % alternative back-testing method that uses history to generate 
+        % datasets with statistical characteristics estimated from the observed
+        % data. This method allows back-testing on a large sample of unseen 
+        % scenarios, hence reducing the likelihood of overfitting to a 
+        % particular historical data set.
+        %
+        % Because each trading strategy needs an implementation tactic 
+        % (a.k.a., trading rules) to enter, maintain, and exit the respective
+        % positions on each instrument, a simulation over thousands of 
+        % different scenarios is mandatory. However, there is an implicit 
+        % tradeoff. 
+        %
+        % The historical data will show the 'real' state of the financial 
+        % instruments based on the realized combinations of events that 
+        % affect each market. Thereby, a traditional portfolio manager will
+        % design a set of rules that optimize or hedge the profits for those
+        % specific combinations of events. Therefore, an investment strategy
+        % that relies on parameters fitted solely by one combination of 
+        % events is doomed to fail.
+        %
+        % Such a framework for designing trading strategies is limited in 
+        % the amount of knowledge that can incorporate. So, simulating 
+        % thousands or even millions of possibles scenarios for the future 
+        % will robust the way that an econometric method exploits an 
+        % inefficiency in the market.
+        %
+        % Based on the previous postulate, I have created a toolbox that 
+        % packages different stochastic processes (a.k.a, valuation methods)
+        % for back-testing synthetic data. 
+        %
+        % The processes that were for this version of the toolbox are: 
+        % Stock prices
+        %     Brownian Motion
+        %     Geometric Brownian motion
+        %     Merton model
+        %     Heston model
+        % Bond Rates
+        %     Vasicek model
+        %     Cox Ingersoll Ross model
     
     
     % -------------------------------------------
