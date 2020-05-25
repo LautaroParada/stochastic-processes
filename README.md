@@ -1,5 +1,7 @@
 # Stochastic Valuation Processes
 
+For a more pleasant version of the documentation, please visit the File Exchange site for Matlab
+
 **Contents**
 
 1. [Rationale](#rationale)
@@ -9,10 +11,10 @@
         - [Brownian Motion](#brownian-motion)
         - [Geometric Brownian Motion](#geometric-brownian-motion)
         - [Merton’s Jump-Diffusion Model](#mertons-jump-diffusion-model)
-        - Heston Model
-    - Bond Rates
-        - Vasicek interest rate model
-        - Cox-Ingersoll-Ross interest rate model
+        - [Heston Model](#heston-model)
+    - [Bond Rates](#bond-rates)
+        - [Vasicek interest rate model](#vasicek-interest-rate-model)
+        - [Cox-Ingersoll-Ross interest rate model](#cox-ingersoll-ross-interest-rate-model)
 4. Utilities
     - Order Flow
     - Information Driven Bars
@@ -157,3 +159,105 @@ xlabel('Time step')
 ```
 
 ![img9](img/img9.png)
+
+##Heston Model
+The original Geometric Brownian Motion stochastic process assumes that volatility over time is constant. In the early 1990s, Steven Heston relaxed this assumption and extended the Geometric Brownian Motion model to include stochastic volatility. The resulting model is called the Heston model. 
+
+In the Heston model, the volatility over time evolves according to the Cox Ingersoll Ross stochastic process. As such, the model makes use of two Wiener processes, one for the Cox Ingersoll Ross process and another for the Geometric Brownian Motion process. These two Wiener processes are correlated using Singular Value Decomposition.
+
+The stochastic differential equations (SDE) for the Cox-Ingersoll-Ross and the Heston model are:
+
+![img10](img/img10.png)
+
+The Euler–Maruyama method is used for the numerical solution of the SDE and has the following recurrence:
+
+![img11](img/img11.png)
+
+The name-value arguments for the method are:
+
+- **rf**(double): Risk-free interest rate, theoretical rate on an asset carrying no risk. Default value is 0.02
+- **theta**(double): Long term price variance. Default value is 1
+- **k**(double): Rate reversion to the long term variance. Default value is 0.5
+- **sigma**(double): Historical volatility of returns. Default value is 1
+- **sto_vol**(logical): Optional argument for the helper that states if the volatility should be constant of stochastic in the data generation process. Default is false for this process.
+
+Usage:
+```
+% Generate the prices paths and save the variable
+heston_prices = sim.heston_prices('rf', 0.01, 'theta', 0.5, ...
+    'k', 0.8, 'sigma', 0.2);
+% plot the results
+plot(heston_prices) 
+title('Assets simulated prices for the Heston model')
+ylabel('Prices')
+xlabel('Time step')
+```
+![img12](img/img12.png)
+
+#Bond Rates
+##Vasicek interest rate model
+The Vasicek interest rate model (or merely the Vasicek model) is a mathematical method of modeling interest rate movements. The model describes the evolution of an interest rate as a factor composed of market risk, time, and equilibrium value, where the rate tends to revert towards the mean of those factors over time. Essentially, it predicts where interest rates will end up at the end of a given period, given current market volatility, the long-run mean interest rate value, and a given market risk factor.
+
+The stochastic differential equation (SDE) for the Vasicek Interest Rate Model process is given by:
+
+![img13](img/img13.png)
+
+The Euler–Maruyama method is used for the numerical solution of the SDE and has the following recurrence:
+
+![img14](img/img14.png)
+
+The name-value arguments for the method are:
+
+- **mu**(double): Long term mean level. All future trajectories of s will evolve around a mean level μ in the long run. Default value is 0
+- **sigma**(double): Instantaneous volatility, measures instant by instant the amplitude of randomness entering the system. Higher σ implies more randomness. Default value is 1
+- **lambda**(double): Speed of reversion. λ characterizes the velocity at which such trajectories will regroup around μ in time. Default value is 0.5
+- **sto_vol**(logical): Optional argument for the helper that states if the volatility should be constant of stochastic in the data generation process. Default is false for this process.
+
+Usage:
+```
+% Create the object for the rate series
+% The following object can be read as follows: Create 5 instruments with
+% 252 observations each, were the time step between the observations is 1
+% and the initial rate is 0.02 (i.e., 2%)
+sim2 = randomProcesses('n', 5, 'T', 252, 'h', 1, 's0', 2);
+% Generate the prices paths and save the variable
+vas_rates = sim2.vas_rates("mu", 0.018, "sigma", 0.03, 'lambda', 0.9);
+% plot the results
+plot(vas_rates) 
+title('Rates simulated for the Vasicek interest rate model')
+ylabel('Rates')
+xlabel('Time step')
+```
+![img15](img/img15.png)
+
+##Cox-Ingersoll-Ross interest rate model
+The Cox-Ingersoll-Ross model (CIR) is a mathematical formula used to model interest rate movements and is driven by a sole source of market risk. It is used as a method to forecast interest rates.  The stochastic process is often used in the valuation of interest rate derivatives and has been used in the Heston model to describe the evolution of volatility over time. One interesting characteristic of the CIR stochastic process is that it is mean reverting.
+
+***The main distinction with the Vasicek model is that the Cox-Ingersoll Ross model does not allow for negative interest rates.***
+
+The stochastic differential equation (SDE) for the Cox-Ingersoll-Ross Interest Rate Model process is given by:
+
+![img16](img/img16.png)
+
+The Euler–Maruyama method is used for the numerical solution of the SDE and has the following recurrence:
+
+![img17](img/img17.png)
+
+The name-value arguments for the method are:
+
+- **mu**(double): Long term mean level. All future trajectories of s will evolve around a mean level μ in the long run. Default value is 0
+- **sigma**(double): Instantaneous volatility, measures instant by instant the amplitude of randomness entering the system. Higher σ implies more randomness. Default value is 1
+- **lambda**(double): Speed of reversion. λ characterizes the velocity at which such trajectories will regroup around μ in time. Default value is 0.5
+- **sto_vol**(logical): Optional argument for the helper that states if the volatility should be constant of stochastic in the data generation process. Default is false for this process.
+
+Usage:
+```
+% Generate the prices paths and save the variable
+cir_rates = sim2.cir_rates("mu", 0.018, "sigma", 0.03, 'lambda', 0.9);
+% plot the results
+plot(cir_rates) 
+title('Rates simulated for the Cox-Ingersoll-Ross interest rate model')
+ylabel('Rates')
+xlabel('Time step')
+```
+![img18](img/img18.png)
