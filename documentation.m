@@ -149,6 +149,7 @@ plot(gbm_prices)
 title('Assets simulated prices for Geometric Brownian Motion')
 ylabel('Prices')
 xlabel('Time step')
+
 %% Merton’s Jump-Diffusion Model
 % In essence, this is a process that allows for a positive probability of a 
 % stock price change of extraordinary magnitude, no matter how small the time 
@@ -195,6 +196,7 @@ plot(merton_prices)
 title('Assets simulated prices for the Merton’s Jump-Diffusion model')
 ylabel('Prices')
 xlabel('Time step')
+
 %% Heston Model
 % The original Geometric Brownian Motion stochastic process assumes that volatility 
 % over time is constant. In the early 1990s, Steven Heston relaxed this assumption 
@@ -303,6 +305,7 @@ plot(vas_rates)
 title('Rates simulated for the Vasicek interest rate model')
 ylabel('Rates')
 xlabel('Time step')
+
 %% Cox-Ingersoll-Ross interest rate model
 % The Cox-Ingersoll-Ross model (CIR) is a mathematical formula used to model 
 % interest rate movements and is driven by a sole source of market risk. It is 
@@ -360,7 +363,7 @@ xlabel('Time step')
 % of Trading Volume, Matthijs Lof_).
 % 
 % 
-% Order Flow
+%% Order Flow
 % Volume generation process based on the number of informed traders and the 
 % number of liquidity seekers for the market of a security. To check the details 
 % of the generation process please see:
@@ -385,7 +388,8 @@ bar(volumes,'EdgeColor','none');
 ylabel({'Volume'});
 xlabel({'Time Step'});
 title({'Generated Volumes for a Heston model'});
-% Information Driven Bars
+
+%% Information Driven Bars
 % The following descriptions came from the book <https://www.bookdepository.com/Advances-Financial-Machine-Learning-Marcos-Lopez-de-Prado/9781119482086?ref=grid-view&qid=1590373792725&sr=1-1 
 % Advances in Financial Machine Learning> by Marcos López de Prado
 %% Tick Imbalance Bars
@@ -428,8 +432,6 @@ title({'Generated Volumes for a Heston model'});
 % 
 % Third, we define a tick imbalance bar (TIB) as a $T^*$ - contiguous subset 
 % of ticks such that the following condition is met:
-%
-% 
 % 
 % <<tib_imbalance.png>>
 %
