@@ -22,7 +22,8 @@ For a more pleasant version of the documentation, please visit the File Exchange
         - [Volume and Dollar Imbalance Bars](#volume-or-dollar-imbalance-bars)
 5. [Future Work](#future-work)
 
-##Rationale
+## Rationale
+
 This toolbox packages a set of stochastic processes for prices and rates simulation, aiming to create a synthetic dataset for quantitative back-testing of trading strategies and asset allocations methods. 
 
 Simulating synthetic stock prices and bond rates provides an alternative back-testing method that uses history to generate datasets with statistical characteristics estimated from the observed data. This method allows back-testing on a large sample of unseen scenarios, hence reducing the likelihood of overfitting to a particular historical data set.
@@ -47,7 +48,7 @@ The processes that were for this version of the toolbox are:
 
 Without further due, let's briefly dive into each process and how you can use the toolbox in your Matlab session.
 
-##Introduction to the Matlab class
+## Introduction to the Matlab class
 All the processes are methods that recreate the price path for an asset based on the user's configuration. As such, the user can initialize the class with the following command. Please be aware that the user should enter the parameters as name-value arguments for the definition of the class.
 ```
 % Creating the object that has the initialized class 
@@ -70,9 +71,9 @@ In the case the user wants a rapid check of the documentation for each process, 
 ```
 doc("randomProcesses")
 ```
-##Stochastic Methods implemented
-###Stock Prices
-####Brownian Motion
+## Stochastic Methods implemented
+### Stock Prices
+#### Brownian Motion
 This method implements  a discrete time stochastic process for a Brownian motion that satisfies the following stochastic differential equation (SDE):
 
 ![img1](img/img1.png)
@@ -99,7 +100,7 @@ xlabel('Time step')
 ```
 ![img3](img/img3.png)
 
-##Geometric Brownian Motion
+## Geometric Brownian Motion
 The Geometric Brownian Motion (GBM) was popularized by Fisher Black and Myron Scholes in their paper The Pricing of Options and Corporate Liabilities. In that paper, they derive the Black Scholes equation. The GBM is essentially a Brownian Motion with constant drift and a stochastic volatility component. 
 
 The stochastic differential equation (SDE) which describes the evolution of a Geometric Brownian Motion stochastic process is the following:
@@ -128,7 +129,7 @@ xlabel('Time step')
 ```
 ![img6](img/img6.png)
 
-##Merton’s Jump-Diffusion Model
+## Merton’s Jump-Diffusion Model
 In essence, this is a process that allows for a positive probability of a stock price change of extraordinary magnitude, no matter how small the time interval between successive observations. More formally, this is a Poisson-driven process, in which the "event" is the arrival of an essential piece of information that creates an abnormal increase/decrease in price. 
 The stochastic differential equation (SDE) which describes the evolution of a Merton stochastic process is the following:
 
@@ -160,7 +161,7 @@ xlabel('Time step')
 
 ![img9](img/img9.png)
 
-##Heston Model
+## Heston Model
 The original Geometric Brownian Motion stochastic process assumes that volatility over time is constant. In the early 1990s, Steven Heston relaxed this assumption and extended the Geometric Brownian Motion model to include stochastic volatility. The resulting model is called the Heston model. 
 
 In the Heston model, the volatility over time evolves according to the Cox Ingersoll Ross stochastic process. As such, the model makes use of two Wiener processes, one for the Cox Ingersoll Ross process and another for the Geometric Brownian Motion process. These two Wiener processes are correlated using Singular Value Decomposition.
@@ -194,8 +195,8 @@ xlabel('Time step')
 ```
 ![img12](img/img12.png)
 
-#Bond Rates
-##Vasicek interest rate model
+# Bond Rates
+## Vasicek interest rate model
 The Vasicek interest rate model (or merely the Vasicek model) is a mathematical method of modeling interest rate movements. The model describes the evolution of an interest rate as a factor composed of market risk, time, and equilibrium value, where the rate tends to revert towards the mean of those factors over time. Essentially, it predicts where interest rates will end up at the end of a given period, given current market volatility, the long-run mean interest rate value, and a given market risk factor.
 
 The stochastic differential equation (SDE) for the Vasicek Interest Rate Model process is given by:
@@ -230,7 +231,7 @@ xlabel('Time step')
 ```
 ![img15](img/img15.png)
 
-##Cox-Ingersoll-Ross interest rate model
+## Cox-Ingersoll-Ross interest rate model
 The Cox-Ingersoll-Ross model (CIR) is a mathematical formula used to model interest rate movements and is driven by a sole source of market risk. It is used as a method to forecast interest rates.  The stochastic process is often used in the valuation of interest rate derivatives and has been used in the Heston model to describe the evolution of volatility over time. One interesting characteristic of the CIR stochastic process is that it is mean reverting.
 
 ***The main distinction with the Vasicek model is that the Cox-Ingersoll Ross model does not allow for negative interest rates.***
@@ -262,10 +263,10 @@ xlabel('Time step')
 ```
 ![img18](img/img18.png)
 
-#Utilities
+# Utilities
 Along with the stochastic models for stock prices and interest rates, several utility methods were implemented. Such as Information driven bars (see Advances in Financial Machine Learning by Marcos López de Prado), volume generation, or order flow for each stock (see Asymmetric Information and the Distribution of Trading Volume, Matthijs Lof).
 
-##Order Flow
+## Order Flow
 Volume generation process based on the number of informed traders and the number of liquidity seekers for the market of a security. To check the details of the generation process please see:
 
 - Lof, Matthijs and van Bommel, Jos, Asymmetric Information and the Distribution of Trading Volume (May 29, 2019). Available at SSRN: https://ssrn.com/abstract=2726187 or http://dx.doi.org/10.2139/ssrn.2726187
@@ -287,11 +288,11 @@ title({'Generated Volumes for a Heston model'});
 ```
 ![img19](img/img19.png)
 
-##Information Driven bars
+## Information Driven bars
 
 For a complete description please Advances in Financial Machine Learning by Marcos López de Prado
 
-###Tick Imbalance bars
+### Tick Imbalance bars
 
 ```
 % all create a matrix of prices and volumes
@@ -305,7 +306,7 @@ priceandvol(tib);
 ![img20](img/img20.png)
 
 
-###Volume or Dollar Imbalance bars
+### Volume or Dollar Imbalance bars
 
 ```
 % all create a matrix of prices and volumes
@@ -319,7 +320,7 @@ priceandvol(dib);
 
 ![img21](img/img21.png)
 
-#Future Work
+# Future Work
 For the next versions of the toolbox, is intended to add: Systemic risk Indicators, Volatility Estimators (for Low and High frequency data points), Statistical Tests for rejecting the Efficient Market Hypotheses, ETF builders, Asset Allocation methods, and Microstructural features. Basically, this toolbox is intended to be the Scikit-Learn of Matlab for Quantitative finance. 
 
 
