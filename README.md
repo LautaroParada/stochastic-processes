@@ -8,7 +8,7 @@
     - [Stock Prices](#stochastic-methods-implemented)
         - [Brownian Motion](#brownian-motion)
         - [Geometric Brownian Motion](#geometric-brownian-motion)
-        - Merton’s Jump-Diffusion Model
+        - [Merton’s Jump-Diffusion Model](#mertons-jump-diffusion-model)
         - Heston Model
     - Bond Rates
         - Vasicek interest rate model
@@ -125,3 +125,35 @@ ylabel('Prices')
 xlabel('Time step')
 ```
 ![img6](img/img6.png)
+
+##Merton’s Jump-Diffusion Model
+In essence, this is a process that allows for a positive probability of a stock price change of extraordinary magnitude, no matter how small the time interval between successive observations. More formally, this is a Poisson-driven process, in which the "event" is the arrival of an essential piece of information that creates an abnormal increase/decrease in price. 
+The stochastic differential equation (SDE) which describes the evolution of a Merton stochastic process is the following:
+
+![img7](img/img7.png)
+
+The Euler–Maruyama method is used for the numerical solution of the SDE and has the following recurrence:
+
+![img8](img/img8.png)
+
+The name-value arguments for the method are: 
+
+- **lambda**(double): Moment of arrival of an important piece of information.
+- **mu**(double): Historical mean of returns.
+- **sigma**(double): Historical volatility of returns.
+- **sto_vol**(logical): Optional argument for the helper that states if the volatility should be constant of stochastic in the data generation process. Default is true for this process.
+
+Usage:
+```
+% Generate the prices paths and save the variable
+% The arrival of critical information will arrive every 30
+% iterations until the end of the data points.
+merton_prices = sim.merton_prices("mu", 0.04, "sigma", 0.15, 'lambda', 30);
+% plot the results
+plot(merton_prices) 
+title('Assets simulated prices for the Merton’s Jump-Diffusion model')
+ylabel('Prices')
+xlabel('Time step')
+```
+
+![img9](img/img9.png)
