@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration build-checksum="135383513" file="C:\Users\lauta\OneDrive\Lautaro\2020\GitHub\Matlab\stochastic-processes\stochastic-processes.prj" location="C:\Users\lauta\OneDrive\Lautaro\2020\GitHub\Matlab\stochastic-processes" name="stochastic-processes" target="target.toolbox" target-name="Package Toolbox">
+  <configuration build-checksum="1239855233" file="C:\Users\lauta\OneDrive\Lautaro\2020\GitHub\Matlab\stochastic-processes\stochastic-processes.prj" location="C:\Users\lauta\OneDrive\Lautaro\2020\GitHub\Matlab\stochastic-processes" name="stochastic-processes" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>stochastic-processes</param.appname>
     <param.authnamewatermark>Lautaro Parada Opazo</param.authnamewatermark>
     <param.email>lautaro.parada.opazo@gmail.com</param.email>
@@ -9,7 +9,7 @@
 Bond Rates: Vasicek interest rate model, Cox Ingersoll Ross model
 Utilities: Quote inflow order, Information driven bars.</param.description>
     <param.screenshot>C:\Users\lauta\OneDrive\Lautaro\2019\Matlab\projects\AlphaVantage\closePrices.png</param.screenshot>
-    <param.version>1.0.5</param.version>
+    <param.version>1.0.5.1</param.version>
     <param.output>${PROJECT_ROOT}\stochastic-processes.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -63,7 +63,7 @@ documentation2.mlx</param.exclude.filters>
     <param.demosxml />
     <param.apps />
     <param.registered.apps />
-    <param.docs />
+    <param.docs>${PROJECT_ROOT}\info.xml</param.docs>
     <param.getting.started.guide>${PROJECT_ROOT}\doc\GettingStarted.mlx</param.getting.started.guide>
     <param.matlabpath.excludes />
     <param.javaclasspath.excludes />
@@ -97,7 +97,6 @@ documentation2.mlx</param.exclude.filters>
       <param.demosxml />
       <param.apps />
       <param.registered.apps />
-      <param.docs />
       <param.matlabpath.excludes />
       <param.javaclasspath.excludes />
       <param.required.addons />
@@ -123,10 +122,12 @@ documentation2.mlx</param.exclude.filters>
     <fileset.rootfiles>
       <file>${PROJECT_ROOT}\@randomProcesses</file>
       <file>${PROJECT_ROOT}\demos.xml</file>
+      <file>${PROJECT_ROOT}\doc</file>
       <file>${PROJECT_ROOT}\documentation.html</file>
       <file>${PROJECT_ROOT}\documentation.m</file>
       <file>${PROJECT_ROOT}\html</file>
       <file>${PROJECT_ROOT}\img</file>
+      <file>${PROJECT_ROOT}\info.xml</file>
       <file>${PROJECT_ROOT}\LICENSE</file>
     </fileset.rootfiles>
     <fileset.depfun.included />
