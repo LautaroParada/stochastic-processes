@@ -1,5 +1,5 @@
 clear; clc;
-nObs = 100;
+nObs = 80;
 rng(randi([1 100]))
 size0 = 5; % uncorrlated variables
 size1 = 5; % correlated variables
@@ -20,10 +20,14 @@ if strcmp(approach, '1')
     x_ = (c * x_')';
 else
     % generating some uncorrelated data
-    x = randn(nObs, size0 + size1);
-    r = cov(x);
+    prices = randomProcesses('n', size0, 'T', nObs).merton_prices('lambda', nObs/4, 'mu', mu, 'sigma', sigma1);
+    x = diff(log(prices));
+    cols = randi([1 size0-1], 1, size1);
+    y = x(:, cols) + sigma1.*randn(nObs-1, numel(cols));
+    x_ = [x y];
+    r = cov(x_);
     c = chol(r, 'lower');
-    x_ = (c * x')';
+    x_ = (c * x_')';
 end
 
 % consolidating everythin in just one dataset
