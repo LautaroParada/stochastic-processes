@@ -160,6 +160,9 @@ classdef randomProcesses
                     b_t(i) = abs(diffs(i)) ./ diffs(i); 
                 elseif i > 1
                     b_t(i) = b_t(i-1);
+                else
+                    % i == 1 and diffs(i) == 0: initialize to 0
+                    b_t(i) = 0;
                 end
             end
             
@@ -230,6 +233,9 @@ classdef randomProcesses
                     b_t(i) = abs(ticks_diffs(i)) ./ ticks_diffs(i); 
                 elseif i > 1
                     b_t(i) = b_t(i-1);
+                else
+                    % i == 1 and ticks_diffs(i) == 0: initialize to 0
+                    b_t(i) = 0;
                 end
             end
             
@@ -239,6 +245,9 @@ classdef randomProcesses
                     v_t(i) = abs(vols_diffs(i)) ./ vols_diffs(i);
                 elseif i > 1
                     v_t(i) = v_t(i-1);
+                else
+                    % i == 1 and vols_diffs(i) == 0: initialize to 0
+                    v_t(i) = 0;
                 end
             end
             
@@ -310,6 +319,9 @@ classdef randomProcesses
                     b_t(i) = abs(ticks_diffs(i)) ./ ticks_diffs(i); 
                 elseif i > 1
                     b_t(i) = b_t(i-1);
+                else
+                    % i == 1 and ticks_diffs(i) == 0: initialize to 0
+                    b_t(i) = 0;
                 end
             end
             
@@ -319,6 +331,9 @@ classdef randomProcesses
                     d_t(i) = abs(doll_diffs(i)) ./ doll_diffs(i);
                 elseif i > 1
                     d_t(i) = d_t(i-1);
+                else
+                    % i == 1 and doll_diffs(i) == 0: initialize to 0
+                    d_t(i) = 0;
                 end
             end
             
@@ -366,9 +381,17 @@ classdef randomProcesses
             
             arguments
                 self
-                params.eta(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty, mustBeNonnegative, mustBeLessThanOrEqual(params.eta, 1)} = 0.1
-                params.M(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty, mustBeNonnegative, mustBeLessThanOrEqual(params.M, 1)} = 0.3
+                params.eta(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty, mustBeNonnegative} = 0.1
+                params.M(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty, mustBeNonnegative} = 0.3
                 params.market_prices double {mustBeReal, mustBeFinite, mustBeNonempty}
+            end
+            
+            % Additional input validation for bounds
+            if params.eta > 1
+                error('order_flow:InvalidInput', 'eta must be between 0 and 1');
+            end
+            if params.M > 1
+                error('order_flow:InvalidInput', 'M must be between 0 and 1');
             end
             
             % Input validation
