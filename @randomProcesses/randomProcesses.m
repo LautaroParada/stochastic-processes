@@ -127,12 +127,28 @@ classdef randomProcesses
         % Tick Imbalance Bars
         % -------------------------------------------
         function tib_ = tib(self, params)
-            % Description goes here
+            % Tick Imbalance Bars (TIB)
+            % Samples bars whenever tick imbalances exceed expectations.
+            % 
+            % Args:
+            %   ticks: Nx2 matrix where column 1 is prices, column 2 is volumes
+            %   window: Number of prior observations for EWMA (default: 15)
+            %
+            % Returns:
+            %   OHLCV matrix (Open, High, Low, Close, Volume)
             
             arguments
                 self
                 params.ticks double {mustBeReal, mustBeNonempty}
-                params.window(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty} = 15
+                params.window(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty, mustBePositive} = 15
+            end
+            
+            % Input validation
+            if size(params.ticks, 2) < 2
+                error('tib:InvalidInput', 'ticks must be an Nx2 matrix with prices in column 1 and volumes in column 2');
+            end
+            if size(params.ticks, 1) < params.window
+                error('tib:InvalidInput', 'Number of ticks must be greater than or equal to window size');
             end
             
             diffs = diff(params.ticks(:, 1)); % just the prices
@@ -154,7 +170,7 @@ classdef randomProcesses
             tib_ = zeros(numel(theta), 5); % preallocate the response (OHLCV)
             
             % condition for the tick imbalance
-            it = 1; % helper for the price samnpling
+            it = 1; % helper for the price sampling
             for j = 1:numel(theta)
                 if abs(theta(j)) >= E_theta(j) * abs(E_bt)
                     tib_(j, 1) = params.ticks(it, 1);              % open
@@ -175,12 +191,28 @@ classdef randomProcesses
         % Volume Imbalance Bars
         % -------------------------------------------
         function vib_ = vib(self, params)
-            % Description goes here
+            % Volume Imbalance Bars (VIB)
+            % Samples bars when volume imbalances diverge from expectations.
+            % 
+            % Args:
+            %   ticks: Nx2 matrix where column 1 is prices, column 2 is volumes
+            %   window: Number of prior observations for EWMA (default: 15)
+            %
+            % Returns:
+            %   OHLCV matrix (Open, High, Low, Close, Volume)
             
             arguments
                 self
                 params.ticks double {mustBeReal, mustBeNonempty}
-                params.window(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty} = 15
+                params.window(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty, mustBePositive} = 15
+            end
+            
+            % Input validation
+            if size(params.ticks, 2) < 2
+                error('vib:InvalidInput', 'ticks must be an Nx2 matrix with prices in column 1 and volumes in column 2');
+            end
+            if size(params.ticks, 1) < params.window
+                error('vib:InvalidInput', 'Number of ticks must be greater than or equal to window size');
             end
             
             ticks_diffs = diff(params.ticks(:, 1)); % prices
@@ -191,7 +223,7 @@ classdef randomProcesses
              b_t = zeros(numel(ticks_diffs), 1);
              v_t = zeros(numel(vols_diffs), 1);
              
-             % iterating trough the records
+             % iterating through the records
              % tick rule
             for i = 1:numel(ticks_diffs)
                 if ticks_diffs(i) ~= 0
@@ -218,7 +250,7 @@ classdef randomProcesses
             vib_ = zeros(numel(theta), 5); % preallocate the response (OHLCV)
             
             % condition for the tick imbalance
-            it = 1; % helper for the price samnpling
+            it = 1; % helper for the price sampling
             for j = 1:numel(theta)
                 if abs(theta(j)) >= E_theta(j) * abs(E_bt)
                     vib_(j, 1) = params.ticks(it, 1);              % open
@@ -239,12 +271,28 @@ classdef randomProcesses
         % Dollar Imbalance Bars
         % -------------------------------------------
         function dib_ = dib(self, params)
-            % Description goes here
+            % Dollar Imbalance Bars (DIB)
+            % Samples bars when dollar imbalances diverge from expectations.
+            % 
+            % Args:
+            %   ticks: Nx2 matrix where column 1 is prices, column 2 is volumes
+            %   window: Number of prior observations for EWMA (default: 15)
+            %
+            % Returns:
+            %   OHLCV matrix (Open, High, Low, Close, Volume)
             
             arguments
                 self
                 params.ticks double {mustBeReal, mustBeNonempty}
-                params.window(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty} = 15
+                params.window(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty, mustBePositive} = 15
+            end
+            
+            % Input validation
+            if size(params.ticks, 2) < 2
+                error('dib:InvalidInput', 'ticks must be an Nx2 matrix with prices in column 1 and volumes in column 2');
+            end
+            if size(params.ticks, 1) < params.window
+                error('dib:InvalidInput', 'Number of ticks must be greater than or equal to window size');
             end
             
             ticks_diffs = diff(params.ticks(:, 1)); % prices
@@ -255,7 +303,7 @@ classdef randomProcesses
              b_t = zeros(numel(ticks_diffs), 1);
              d_t = zeros(numel(doll_diffs), 1);
             
-             % iterating trough the records
+             % iterating through the records
              % tick rule
             for i = 1:numel(ticks_diffs)
                 if ticks_diffs(i) ~= 0
@@ -282,7 +330,7 @@ classdef randomProcesses
             dib_ = zeros(numel(theta), 5); % preallocate the response (OHLCV)
             
             % condition for the tick imbalance
-            it = 1; % helper for the price samnpling
+            it = 1; % helper for the price sampling
             for j = 1:numel(theta)
                 if abs(theta(j)) >= E_theta(j) * abs(E_bt)
                     dib_(j, 1) = params.ticks(it, 1);              % open
@@ -304,21 +352,40 @@ classdef randomProcesses
         % Asymmetric Information and the Distribution of Trading Volume
         % -------------------------------------------
         function vols = order_flow(self, params)
-            % Description goes here
+            % Order Flow - Volume Generation Process
+            % Volume generation based on informed traders and liquidity seekers.
+            % Reference: Lof, Matthijs and van Bommel, Jos (2019)
+            %
+            % Args:
+            %   eta: Proportion of informed trade (default: 0.1)
+            %   M: Proportion of liquidity seekers (default: 0.3)
+            %   market_prices: Vector of tick prices for a financial instrument
+            %
+            % Returns:
+            %   Vector of generated volumes
+            
             arguments
                 self
-                params.eta(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty} = 0.1
-                params.M(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty} = 0.3
+                params.eta(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty, mustBeNonnegative, mustBeLessThanOrEqual(params.eta, 1)} = 0.1
+                params.M(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty, mustBeNonnegative, mustBeLessThanOrEqual(params.M, 1)} = 0.3
                 params.market_prices double {mustBeReal, mustBeFinite, mustBeNonempty}
+            end
+            
+            % Input validation
+            if size(params.market_prices, 2) > 1 && size(params.market_prices, 1) == 1
+                % Convert row vector to column vector
+                params.market_prices = params.market_prices';
+            elseif size(params.market_prices, 2) > 1
+                error('order_flow:InvalidInput', 'market_prices must be a vector (1D array)');
             end
             
             signals = diff(params.market_prices); % evolution of prices for signals
             signals = [randn(1); signals]; % helper for the final response
             sigma_u = (1 - params.eta) * self.sigma; % trading intensity for uninformed traders
-            sigma_v = params.eta * self.sigma; % trading intensity for informed tarders
+            sigma_v = params.eta * self.sigma; % trading intensity for informed traders
             sigma_e = rand(1); % implicit error
-            m = params.eta * params.M; %informed liquidity seekers
-            n_ = (1 - params.eta) * params.M; %uninformed liquidity seekers
+            m = params.eta * params.M; % informed liquidity seekers
+            n_ = (1 - params.eta) * params.M; % uninformed liquidity seekers
 
             lambda = sqrt(m * (sigma_v^2 + sigma_e^2)) / ...
                 ((m + 1)*sqrt(n_*sigma_u));
@@ -326,9 +393,9 @@ classdef randomProcesses
             beta = sqrt( (n_*sigma_u) / ...
                 (m*(sigma_v^2 + sigma_e^2)) );
 
-            asymetric_info = (1/(2*lambda)) - ((m-1)/2)*beta;
+            asymmetric_info = (1/(2*lambda)) - ((m-1)/2)*beta;
 
-            vols = abs(signals * asymetric_info);
+            vols = abs(signals * asymmetric_info);
         end
         
         % -------------------------------------------
