@@ -142,7 +142,7 @@ classdef randomProcesses
             for i = 1:numel(diffs)
                 if diffs(i) ~= 0
                     b_t(i) = abs(diffs(i)) ./ diffs(i); 
-                else
+                elseif i > 1
                     b_t(i) = b_t(i-1);
                 end
             end
@@ -196,7 +196,7 @@ classdef randomProcesses
             for i = 1:numel(ticks_diffs)
                 if ticks_diffs(i) ~= 0
                     b_t(i) = abs(ticks_diffs(i)) ./ ticks_diffs(i); 
-                else
+                elseif i > 1
                     b_t(i) = b_t(i-1);
                 end
             end
@@ -205,7 +205,7 @@ classdef randomProcesses
             for i = 1:numel(vols_diffs)
                 if vols_diffs(i) ~= 0
                     v_t(i) = abs(vols_diffs(i)) ./ vols_diffs(i);
-                else
+                elseif i > 1
                     v_t(i) = v_t(i-1);
                 end
             end
@@ -260,7 +260,7 @@ classdef randomProcesses
             for i = 1:numel(ticks_diffs)
                 if ticks_diffs(i) ~= 0
                     b_t(i) = abs(ticks_diffs(i)) ./ ticks_diffs(i); 
-                else
+                elseif i > 1
                     b_t(i) = b_t(i-1);
                 end
             end
@@ -269,7 +269,7 @@ classdef randomProcesses
             for i = 1:numel(doll_diffs)
                 if doll_diffs(i) ~= 0
                     d_t(i) = abs(doll_diffs(i)) ./ doll_diffs(i);
-                else
+                elseif i > 1
                     d_t(i) = d_t(i-1);
                 end
             end
@@ -324,7 +324,7 @@ classdef randomProcesses
                 ((m + 1)*sqrt(n_*sigma_u));
             
             beta = sqrt( (n_*sigma_u) / ...
-                (m*(sigma_v^2 * sigma_e^2)) );
+                (m*(sigma_v^2 + sigma_e^2)) );
 
             asymetric_info = (1/(2*lambda)) - ((m-1)/2)*beta;
 
@@ -386,7 +386,7 @@ classdef randomProcesses
         % -------------------------------------------
         % Geometric Brownian motion
         % -------------------------------------------
-        function gbm_pricess = gbm_prices(self, params)
+        function gbm_prices = gbm_prices(self, params)
             % The Geometric Brownian Motion (GBM) was popularized by Fisher 
             % Black and Myron Scholes in their paper The Pricing of Options
             % and Corporate Liabilities. In that paper, they derive the 
@@ -426,17 +426,17 @@ classdef randomProcesses
                 params.sto_vol(1,1) logical {mustBeNumericOrLogical} = true
             end
             % preallocate the data
-            gbm_pricess = zeros(self.T, self.n);
+            gbm_prices = zeros(self.T, self.n);
             % check the size of the output matrix
             if self.n > 1
                 for i = 1:self.n
                     % several securities to simulate
-                    gbm_pricess(:, i) = self.brownian_returns(params.mu, ...
+                    gbm_prices(:, i) = self.brownian_returns(params.mu, ...
                         params.sigma, params.sto_vol);
                 end
             else
                 % the case for only 1 simulation
-                gbm_pricess = self.brownian_returns(params.mu, ...
+                gbm_prices = self.brownian_returns(params.mu, ...
                     params.sigma, params.sto_vol);
             end
         end
@@ -506,7 +506,7 @@ classdef randomProcesses
         % -------------------------------------------
         % Vasicek Interest Rate Model
         % -------------------------------------------
-        function ou_ratess = vas_rates(self, params)
+        function ou_rates = vas_rates(self, params)
             % The Vasicek interest rate model (or simply the Vasicek model)
             % is a mathematical method of modeling interest rate movements.
             % The model describes the movement of an interest rate as a 
@@ -556,16 +556,16 @@ classdef randomProcesses
             end
             
             % preallocate the data
-            ou_ratess = zeros(self.T, self.n);
+            ou_rates = zeros(self.T, self.n);
             if self.n > 1
                 for i = 1:self.n
                     % several securities to simulate
-                    ou_ratess(:, i) = self.vas_returns(params.mu, ...
+                    ou_rates(:, i) = self.vas_returns(params.mu, ...
                         params.sigma, params.lambda, params.sto_vol);
                 end
             else
                 % the case for only 1 simulation
-                ou_ratess = self.vas_returns(params.mu, params.sigma, ...
+                ou_rates = self.vas_returns(params.mu, params.sigma, ...
                     params.lambda, params.sto_vol);
             end
         end
@@ -573,7 +573,7 @@ classdef randomProcesses
         % -------------------------------------------
         % Cox Ingersoll Ross (CIR) stochastic proces
         % -------------------------------------------
-        function cir_ratess = cir_rates(self, params)
+        function cir_rates = cir_rates(self, params)
             % The Cox-Ingersoll-Ross model (CIR) is a mathematical 
             % formula used to model interest rate movements and is 
             % driven by a sole source of market risk. It is used as 
@@ -616,16 +616,16 @@ classdef randomProcesses
             end
             
             % preallocate the data
-            cir_ratess = zeros(self.T, self.n);
+            cir_rates = zeros(self.T, self.n);
             if self.n > 1
                 for i = 1:self.n
                     % several securities to simulate
-                    cir_ratess(:, i) = self.cir_returns(params.mu, ...
+                    cir_rates(:, i) = self.cir_returns(params.mu, ...
                         params.sigma, params.lambda, params.sto_vol);
                 end
             else
                 % the case for only 1 simulation
-                cir_ratess = self.cir_returns(params.mu, params.sigma, ...
+                cir_rates = self.cir_returns(params.mu, params.sigma, ...
                     params.lambda, params.sto_vol);
             end
         end
@@ -903,7 +903,7 @@ classdef randomProcesses
         end
     end
     
-    % ethods are associated with a class, but not with specific instances of that class
+    % Methods are associated with a class, but not with specific instances of that class
     methods(Static)
         function a = ewma(values, window)
             % Exponential weighted moving average
