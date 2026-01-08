@@ -175,7 +175,7 @@ classdef randomProcesses
             % condition for the tick imbalance
             it = 1; % helper for the price sampling
             for j = 1:numel(theta)
-                if abs(theta(j)) >= E_theta(j) * abs(E_bt)
+                if abs(theta(j)) >= E_theta(j) * abs(E_bt(j))
                     tib_(j, 1) = params.ticks(it, 1);              % open
                     tib_(j, 2) = max(params.ticks(it:j, 1));       % high
                     tib_(j, 3) = min(params.ticks(it:j, 1));       % low
@@ -261,7 +261,7 @@ classdef randomProcesses
             % condition for the tick imbalance
             it = 1; % helper for the price sampling
             for j = 1:numel(theta)
-                if abs(theta(j)) >= E_theta(j) * abs(E_bt)
+                if abs(theta(j)) >= E_theta(j) * abs(E_bt(j))
                     vib_(j, 1) = params.ticks(it, 1);              % open
                     vib_(j, 2) = max(params.ticks(it:j, 1));       % high
                     vib_(j, 3) = min(params.ticks(it:j, 1));       % low
@@ -347,7 +347,7 @@ classdef randomProcesses
             % condition for the tick imbalance
             it = 1; % helper for the price sampling
             for j = 1:numel(theta)
-                if abs(theta(j)) >= E_theta(j) * abs(E_bt)
+                if abs(theta(j)) >= E_theta(j) * abs(E_bt(j))
                     dib_(j, 1) = params.ticks(it, 1);              % open
                     dib_(j, 2) = max(params.ticks(it:j, 1));       % high
                     dib_(j, 3) = min(params.ticks(it:j, 1));       % low
