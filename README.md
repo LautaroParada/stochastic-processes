@@ -7,22 +7,25 @@ https://www.mathworks.com/matlabcentral/fileexchange/76023-stochastic-processes
 **Contents**
 
 1. [Rationale](#rationale)
-2. [Introduction to the Matlab class](#introduction-to-the-matlab-class)
-3. [Stochastic Methods implemented](#stochastic-methods-implemented)
+2. [Recent Improvements](#recent-improvements)
+3. [Introduction to the Matlab class](#introduction-to-the-matlab-class)
+4. [Stochastic Methods implemented](#stochastic-methods-implemented)
     - [Stock Prices](#stochastic-methods-implemented)
         - [Brownian Motion](#brownian-motion)
         - [Geometric Brownian Motion](#geometric-brownian-motion)
-        - [Merton’s Jump-Diffusion Model](#mertons-jump-diffusion-model)
+        - [Merton's Jump-Diffusion Model](#mertons-jump-diffusion-model)
         - [Heston Model](#heston-model)
     - [Bond Rates](#bond-rates)
         - [Vasicek interest rate model](#vasicek-interest-rate-model)
         - [Cox-Ingersoll-Ross interest rate model](#cox-ingersoll-ross-interest-rate-model)
-4. [Utilities](#utilities)
+5. [Utilities](#utilities)
     - [Order Flow](#order-flow)
     - [Information Driven Bars](#information-driven-bars)
         - [Tick Imbalance Bars](#tick-imbalance-bars)
         - [Volume and Dollar Imbalance Bars](#volume-or-dollar-imbalance-bars)
-5. [Future Work](#future-work)
+6. [Testing](#testing)
+7. [Future Work](#future-work)
+
 
 ## Rationale
 
@@ -49,6 +52,44 @@ The processes that were for this version of the toolbox are:
 - Cox Ingersoll Ross model
 
 Without further due, let's briefly dive into each process and how you can use the toolbox in your Matlab session.
+
+## Recent Improvements
+
+### Code Quality and Reliability Enhancements
+
+The toolbox has recently undergone a comprehensive code review and optimization, resulting in significant improvements to reliability, usability, and maintainability:
+
+#### Critical Bug Fixes
+- **Fixed function return variable typos** that would cause runtime errors in `gbm_prices`, `vas_rates`, and `cir_rates` methods
+- **Corrected mathematical error** in the `order_flow` beta parameter calculation (variance terms now correctly added instead of multiplied)
+- **Resolved index out-of-bounds errors** in tick rule loops for imbalance bar calculations
+- **Fixed vector indexing error** in TIB, VIB, and DIB methods for proper element-wise comparisons
+
+#### Input Validation
+All utility methods now include robust input validation:
+- Tick data format enforcement (Nx2 matrix requirement)
+- Window size constraints validation
+- Parameter bounds checking (eta and M must be in [0,1])
+- Automatic vector shape conversion for market prices
+
+#### Improved Documentation
+- Enhanced method docstrings with clear parameter descriptions and return value specifications
+- Fixed numerous spelling and grammatical errors throughout the codebase
+- Added comprehensive inline documentation for all public methods
+
+#### Test Suite
+A complete test suite has been added to ensure code reliability:
+- **29 unit tests** covering all methods and functions
+- Tests for class initialization, stochastic processes, utility methods, input validation, and edge cases
+- Easy-to-use test runner: `run_all_tests.m`
+- Comprehensive testing guide: `TESTING.md`
+
+Run tests with:
+```matlab
+>> run_all_tests
+```
+
+For detailed information on these improvements, see `REVIEW_SUMMARY.md` and `TESTING.md`.
 
 ## Introduction to the Matlab class
 All the processes are methods that recreate the price path for an asset based on the user's configuration. As such, the user can initialize the class with the following command. Please be aware that the user should enter the parameters as name-value arguments for the definition of the class.
@@ -321,6 +362,49 @@ priceandvol(dib);
 ```
 
 ![img21](img/img21.png)
+
+# Testing
+
+This toolbox now includes a comprehensive test suite to ensure code quality and reliability.
+
+## Running Tests
+
+### Quick Start
+```matlab
+>> run_all_tests
+```
+
+### Run Specific Tests
+```matlab
+>> results = runtests('test_randomProcesses')
+>> results = runtests('test_randomProcesses', 'Name', 'testBrownianPrices')
+```
+
+### From Command Line
+```bash
+matlab -batch "run_all_tests"
+```
+
+## Test Coverage
+
+The test suite includes **29 comprehensive tests** covering:
+
+- **Class Initialization** (4 tests): Constructor validation, default values, dependent properties
+- **Stock Price Methods** (5 tests): Brownian Motion, GBM, Merton, Heston models
+- **Interest Rate Methods** (2 tests): Vasicek and CIR models
+- **Utility Methods** (4 tests): Order flow, TIB, VIB, DIB
+- **Input Validation** (8 tests): Error detection and handling
+- **Static Methods** (1 test): EWMA implementation
+- **Edge Cases** (5 tests): Zero price differences, small datasets, stochastic volatility options
+
+All tests verify:
+- ✅ Correct output dimensions
+- ✅ Valid initial conditions
+- ✅ Proper error handling
+- ✅ Mathematical properties (OHLC relationships, non-negativity, etc.)
+- ✅ Data type correctness
+
+For detailed testing information, see `TESTING.md`.
 
 # Future Work
 For the next versions of the toolbox, is intended to add: Systemic risk Indicators, Volatility Estimators (for Low and High frequency data points), Statistical Tests for rejecting the Efficient Market Hypotheses, ETF builders, Asset Allocation methods, and Microstructural features. Basically, this toolbox is intended to be the Scikit-Learn of Matlab for Quantitative finance. 

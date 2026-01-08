@@ -127,12 +127,28 @@ classdef randomProcesses
         % Tick Imbalance Bars
         % -------------------------------------------
         function tib_ = tib(self, params)
-            % Description goes here
+            % Tick Imbalance Bars (TIB)
+            % Samples bars whenever tick imbalances exceed expectations.
+            % 
+            % Args:
+            %   ticks: Nx2 matrix where column 1 is prices, column 2 is volumes
+            %   window: Number of prior observations for EWMA (default: 15)
+            %
+            % Returns:
+            %   OHLCV matrix (Open, High, Low, Close, Volume)
             
             arguments
                 self
                 params.ticks double {mustBeReal, mustBeNonempty}
-                params.window(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty} = 15
+                params.window(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty, mustBePositive} = 15
+            end
+            
+            % Input validation
+            if size(params.ticks, 2) < 2
+                error('tib:InvalidInput', 'ticks must be an Nx2 matrix with prices in column 1 and volumes in column 2');
+            end
+            if size(params.ticks, 1) < params.window
+                error('tib:InvalidInput', 'Number of ticks must be greater than or equal to window size');
             end
             
             diffs = diff(params.ticks(:, 1)); % just the prices
@@ -142,8 +158,11 @@ classdef randomProcesses
             for i = 1:numel(diffs)
                 if diffs(i) ~= 0
                     b_t(i) = abs(diffs(i)) ./ diffs(i); 
-                else
+                elseif i > 1
                     b_t(i) = b_t(i-1);
+                else
+                    % i == 1 and diffs(i) == 0: initialize to 0
+                    b_t(i) = 0;
                 end
             end
             
@@ -154,9 +173,9 @@ classdef randomProcesses
             tib_ = zeros(numel(theta), 5); % preallocate the response (OHLCV)
             
             % condition for the tick imbalance
-            it = 1; % helper for the price samnpling
+            it = 1; % helper for the price sampling
             for j = 1:numel(theta)
-                if abs(theta(j)) >= E_theta(j) * abs(E_bt)
+                if abs(theta(j)) >= E_theta(j) * abs(E_bt(j))
                     tib_(j, 1) = params.ticks(it, 1);              % open
                     tib_(j, 2) = max(params.ticks(it:j, 1));       % high
                     tib_(j, 3) = min(params.ticks(it:j, 1));       % low
@@ -175,12 +194,28 @@ classdef randomProcesses
         % Volume Imbalance Bars
         % -------------------------------------------
         function vib_ = vib(self, params)
-            % Description goes here
+            % Volume Imbalance Bars (VIB)
+            % Samples bars when volume imbalances diverge from expectations.
+            % 
+            % Args:
+            %   ticks: Nx2 matrix where column 1 is prices, column 2 is volumes
+            %   window: Number of prior observations for EWMA (default: 15)
+            %
+            % Returns:
+            %   OHLCV matrix (Open, High, Low, Close, Volume)
             
             arguments
                 self
                 params.ticks double {mustBeReal, mustBeNonempty}
-                params.window(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty} = 15
+                params.window(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty, mustBePositive} = 15
+            end
+            
+            % Input validation
+            if size(params.ticks, 2) < 2
+                error('vib:InvalidInput', 'ticks must be an Nx2 matrix with prices in column 1 and volumes in column 2');
+            end
+            if size(params.ticks, 1) < params.window
+                error('vib:InvalidInput', 'Number of ticks must be greater than or equal to window size');
             end
             
             ticks_diffs = diff(params.ticks(:, 1)); % prices
@@ -191,13 +226,16 @@ classdef randomProcesses
              b_t = zeros(numel(ticks_diffs), 1);
              v_t = zeros(numel(vols_diffs), 1);
              
-             % iterating trough the records
+             % iterating through the records
              % tick rule
             for i = 1:numel(ticks_diffs)
                 if ticks_diffs(i) ~= 0
                     b_t(i) = abs(ticks_diffs(i)) ./ ticks_diffs(i); 
-                else
+                elseif i > 1
                     b_t(i) = b_t(i-1);
+                else
+                    % i == 1 and ticks_diffs(i) == 0: initialize to 0
+                    b_t(i) = 0;
                 end
             end
             
@@ -205,8 +243,11 @@ classdef randomProcesses
             for i = 1:numel(vols_diffs)
                 if vols_diffs(i) ~= 0
                     v_t(i) = abs(vols_diffs(i)) ./ vols_diffs(i);
-                else
+                elseif i > 1
                     v_t(i) = v_t(i-1);
+                else
+                    % i == 1 and vols_diffs(i) == 0: initialize to 0
+                    v_t(i) = 0;
                 end
             end
             
@@ -218,9 +259,9 @@ classdef randomProcesses
             vib_ = zeros(numel(theta), 5); % preallocate the response (OHLCV)
             
             % condition for the tick imbalance
-            it = 1; % helper for the price samnpling
+            it = 1; % helper for the price sampling
             for j = 1:numel(theta)
-                if abs(theta(j)) >= E_theta(j) * abs(E_bt)
+                if abs(theta(j)) >= E_theta(j) * abs(E_bt(j))
                     vib_(j, 1) = params.ticks(it, 1);              % open
                     vib_(j, 2) = max(params.ticks(it:j, 1));       % high
                     vib_(j, 3) = min(params.ticks(it:j, 1));       % low
@@ -239,12 +280,28 @@ classdef randomProcesses
         % Dollar Imbalance Bars
         % -------------------------------------------
         function dib_ = dib(self, params)
-            % Description goes here
+            % Dollar Imbalance Bars (DIB)
+            % Samples bars when dollar imbalances diverge from expectations.
+            % 
+            % Args:
+            %   ticks: Nx2 matrix where column 1 is prices, column 2 is volumes
+            %   window: Number of prior observations for EWMA (default: 15)
+            %
+            % Returns:
+            %   OHLCV matrix (Open, High, Low, Close, Volume)
             
             arguments
                 self
                 params.ticks double {mustBeReal, mustBeNonempty}
-                params.window(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty} = 15
+                params.window(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty, mustBePositive} = 15
+            end
+            
+            % Input validation
+            if size(params.ticks, 2) < 2
+                error('dib:InvalidInput', 'ticks must be an Nx2 matrix with prices in column 1 and volumes in column 2');
+            end
+            if size(params.ticks, 1) < params.window
+                error('dib:InvalidInput', 'Number of ticks must be greater than or equal to window size');
             end
             
             ticks_diffs = diff(params.ticks(:, 1)); % prices
@@ -255,13 +312,16 @@ classdef randomProcesses
              b_t = zeros(numel(ticks_diffs), 1);
              d_t = zeros(numel(doll_diffs), 1);
             
-             % iterating trough the records
+             % iterating through the records
              % tick rule
             for i = 1:numel(ticks_diffs)
                 if ticks_diffs(i) ~= 0
                     b_t(i) = abs(ticks_diffs(i)) ./ ticks_diffs(i); 
-                else
+                elseif i > 1
                     b_t(i) = b_t(i-1);
+                else
+                    % i == 1 and ticks_diffs(i) == 0: initialize to 0
+                    b_t(i) = 0;
                 end
             end
             
@@ -269,8 +329,11 @@ classdef randomProcesses
             for i = 1:numel(doll_diffs)
                 if doll_diffs(i) ~= 0
                     d_t(i) = abs(doll_diffs(i)) ./ doll_diffs(i);
-                else
+                elseif i > 1
                     d_t(i) = d_t(i-1);
+                else
+                    % i == 1 and doll_diffs(i) == 0: initialize to 0
+                    d_t(i) = 0;
                 end
             end
             
@@ -282,9 +345,9 @@ classdef randomProcesses
             dib_ = zeros(numel(theta), 5); % preallocate the response (OHLCV)
             
             % condition for the tick imbalance
-            it = 1; % helper for the price samnpling
+            it = 1; % helper for the price sampling
             for j = 1:numel(theta)
-                if abs(theta(j)) >= E_theta(j) * abs(E_bt)
+                if abs(theta(j)) >= E_theta(j) * abs(E_bt(j))
                     dib_(j, 1) = params.ticks(it, 1);              % open
                     dib_(j, 2) = max(params.ticks(it:j, 1));       % high
                     dib_(j, 3) = min(params.ticks(it:j, 1));       % low
@@ -304,31 +367,58 @@ classdef randomProcesses
         % Asymmetric Information and the Distribution of Trading Volume
         % -------------------------------------------
         function vols = order_flow(self, params)
-            % Description goes here
+            % Order Flow - Volume Generation Process
+            % Volume generation based on informed traders and liquidity seekers.
+            % Reference: Lof, Matthijs and van Bommel, Jos (2019)
+            %
+            % Args:
+            %   eta: Proportion of informed trade (default: 0.1)
+            %   M: Proportion of liquidity seekers (default: 0.3)
+            %   market_prices: Vector of tick prices for a financial instrument
+            %
+            % Returns:
+            %   Vector of generated volumes
+            
             arguments
                 self
-                params.eta(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty} = 0.1
-                params.M(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty} = 0.3
+                params.eta(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty, mustBeNonnegative} = 0.1
+                params.M(1,1) double {mustBeReal, mustBeFinite, mustBeNonempty, mustBeNonnegative} = 0.3
                 params.market_prices double {mustBeReal, mustBeFinite, mustBeNonempty}
+            end
+            
+            % Additional input validation for bounds
+            if params.eta > 1
+                error('order_flow:InvalidInput', 'eta must be between 0 and 1');
+            end
+            if params.M > 1
+                error('order_flow:InvalidInput', 'M must be between 0 and 1');
+            end
+            
+            % Input validation
+            if size(params.market_prices, 2) > 1 && size(params.market_prices, 1) == 1
+                % Convert row vector to column vector
+                params.market_prices = params.market_prices';
+            elseif size(params.market_prices, 2) > 1
+                error('order_flow:InvalidInput', 'market_prices must be a vector (1D array)');
             end
             
             signals = diff(params.market_prices); % evolution of prices for signals
             signals = [randn(1); signals]; % helper for the final response
             sigma_u = (1 - params.eta) * self.sigma; % trading intensity for uninformed traders
-            sigma_v = params.eta * self.sigma; % trading intensity for informed tarders
+            sigma_v = params.eta * self.sigma; % trading intensity for informed traders
             sigma_e = rand(1); % implicit error
-            m = params.eta * params.M; %informed liquidity seekers
-            n_ = (1 - params.eta) * params.M; %uninformed liquidity seekers
+            m = params.eta * params.M; % informed liquidity seekers
+            n_ = (1 - params.eta) * params.M; % uninformed liquidity seekers
 
             lambda = sqrt(m * (sigma_v^2 + sigma_e^2)) / ...
                 ((m + 1)*sqrt(n_*sigma_u));
             
             beta = sqrt( (n_*sigma_u) / ...
-                (m*(sigma_v^2 * sigma_e^2)) );
+                (m*(sigma_v^2 + sigma_e^2)) );
 
-            asymetric_info = (1/(2*lambda)) - ((m-1)/2)*beta;
+            asymmetric_info = (1/(2*lambda)) - ((m-1)/2)*beta;
 
-            vols = abs(signals * asymetric_info);
+            vols = abs(signals * asymmetric_info);
         end
         
         % -------------------------------------------
@@ -386,7 +476,7 @@ classdef randomProcesses
         % -------------------------------------------
         % Geometric Brownian motion
         % -------------------------------------------
-        function gbm_pricess = gbm_prices(self, params)
+        function gbm_prices = gbm_prices(self, params)
             % The Geometric Brownian Motion (GBM) was popularized by Fisher 
             % Black and Myron Scholes in their paper The Pricing of Options
             % and Corporate Liabilities. In that paper, they derive the 
@@ -426,17 +516,17 @@ classdef randomProcesses
                 params.sto_vol(1,1) logical {mustBeNumericOrLogical} = true
             end
             % preallocate the data
-            gbm_pricess = zeros(self.T, self.n);
+            gbm_prices = zeros(self.T, self.n);
             % check the size of the output matrix
             if self.n > 1
                 for i = 1:self.n
                     % several securities to simulate
-                    gbm_pricess(:, i) = self.brownian_returns(params.mu, ...
+                    gbm_prices(:, i) = self.brownian_returns(params.mu, ...
                         params.sigma, params.sto_vol);
                 end
             else
                 % the case for only 1 simulation
-                gbm_pricess = self.brownian_returns(params.mu, ...
+                gbm_prices = self.brownian_returns(params.mu, ...
                     params.sigma, params.sto_vol);
             end
         end
@@ -506,7 +596,7 @@ classdef randomProcesses
         % -------------------------------------------
         % Vasicek Interest Rate Model
         % -------------------------------------------
-        function ou_ratess = vas_rates(self, params)
+        function ou_rates = vas_rates(self, params)
             % The Vasicek interest rate model (or simply the Vasicek model)
             % is a mathematical method of modeling interest rate movements.
             % The model describes the movement of an interest rate as a 
@@ -556,16 +646,16 @@ classdef randomProcesses
             end
             
             % preallocate the data
-            ou_ratess = zeros(self.T, self.n);
+            ou_rates = zeros(self.T, self.n);
             if self.n > 1
                 for i = 1:self.n
                     % several securities to simulate
-                    ou_ratess(:, i) = self.vas_returns(params.mu, ...
+                    ou_rates(:, i) = self.vas_returns(params.mu, ...
                         params.sigma, params.lambda, params.sto_vol);
                 end
             else
                 % the case for only 1 simulation
-                ou_ratess = self.vas_returns(params.mu, params.sigma, ...
+                ou_rates = self.vas_returns(params.mu, params.sigma, ...
                     params.lambda, params.sto_vol);
             end
         end
@@ -573,7 +663,7 @@ classdef randomProcesses
         % -------------------------------------------
         % Cox Ingersoll Ross (CIR) stochastic proces
         % -------------------------------------------
-        function cir_ratess = cir_rates(self, params)
+        function cir_rates = cir_rates(self, params)
             % The Cox-Ingersoll-Ross model (CIR) is a mathematical 
             % formula used to model interest rate movements and is 
             % driven by a sole source of market risk. It is used as 
@@ -616,16 +706,16 @@ classdef randomProcesses
             end
             
             % preallocate the data
-            cir_ratess = zeros(self.T, self.n);
+            cir_rates = zeros(self.T, self.n);
             if self.n > 1
                 for i = 1:self.n
                     % several securities to simulate
-                    cir_ratess(:, i) = self.cir_returns(params.mu, ...
+                    cir_rates(:, i) = self.cir_returns(params.mu, ...
                         params.sigma, params.lambda, params.sto_vol);
                 end
             else
                 % the case for only 1 simulation
-                cir_ratess = self.cir_returns(params.mu, params.sigma, ...
+                cir_rates = self.cir_returns(params.mu, params.sigma, ...
                     params.lambda, params.sto_vol);
             end
         end
@@ -814,7 +904,7 @@ classdef randomProcesses
             small_lambda = -(1.0 / lambda_);
             pd = makedist('Poisson', 'lambda', lambda);
             
-            % applying the psudo-code of the algorithm
+            % applying the pseudo-code of the algorithm
             for i = 1:self.T
                 t = t + small_lambda * log(rand(1));
                 if t > self.T
@@ -845,7 +935,7 @@ classdef randomProcesses
         end
         
         function bro_returns = brownian_returns(self, mu, sigma, sto_vol)            
-            % compute the price series for a bownian motion
+            % Compute the price series for a Brownian motion
             % preallocate the volatility
             volatility = self.random_disturbance(sto_vol);
             % preallocate the price series
@@ -891,7 +981,7 @@ classdef randomProcesses
             z1 = self.random_disturbance(false);
             z2 = self.random_disturbance(false);
             
-            % randonmly create an absolute correlation power
+            % randomly create an absolute correlation power
             rho = rand(1);
             
             corr1 = sqrt( (1 + rho) / 2 );
@@ -903,11 +993,20 @@ classdef randomProcesses
         end
     end
     
-    % ethods are associated with a class, but not with specific instances of that class
+    % Methods are associated with a class, but not with specific instances of that class
     methods(Static)
         function a = ewma(values, window)
-            % Exponential weighted moving average
-            
+            % Exponential Weighted Moving Average (EWMA)
+            % Computes smoothed values using exponential weighting.
+            %
+            % Args:
+            %   values: Input vector to smooth
+            %   window: Window size for exponential weighting
+            %
+            % Returns:
+            %   Smoothed vector of same size as input
+            %
+            % References:
             % https://la.mathworks.com/videos/using-convolution-to-smooth-data-with-a-moving-average-in-matlab-97193.html
             % https://www.youtube.com/watch?v=3y9GESSZmS0
 
