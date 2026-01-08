@@ -881,7 +881,7 @@ classdef randomProcesses
             small_lambda = -(1.0 / lambda_);
             pd = makedist('Poisson', 'lambda', lambda);
             
-            % applying the psudo-code of the algorithm
+            % applying the pseudo-code of the algorithm
             for i = 1:self.T
                 t = t + small_lambda * log(rand(1));
                 if t > self.T
@@ -912,7 +912,7 @@ classdef randomProcesses
         end
         
         function bro_returns = brownian_returns(self, mu, sigma, sto_vol)            
-            % compute the price series for a bownian motion
+            % Compute the price series for a Brownian motion
             % preallocate the volatility
             volatility = self.random_disturbance(sto_vol);
             % preallocate the price series
@@ -958,7 +958,7 @@ classdef randomProcesses
             z1 = self.random_disturbance(false);
             z2 = self.random_disturbance(false);
             
-            % randonmly create an absolute correlation power
+            % randomly create an absolute correlation power
             rho = rand(1);
             
             corr1 = sqrt( (1 + rho) / 2 );
@@ -973,8 +973,17 @@ classdef randomProcesses
     % Methods are associated with a class, but not with specific instances of that class
     methods(Static)
         function a = ewma(values, window)
-            % Exponential weighted moving average
-            
+            % Exponential Weighted Moving Average (EWMA)
+            % Computes smoothed values using exponential weighting.
+            %
+            % Args:
+            %   values: Input vector to smooth
+            %   window: Window size for exponential weighting
+            %
+            % Returns:
+            %   Smoothed vector of same size as input
+            %
+            % References:
             % https://la.mathworks.com/videos/using-convolution-to-smooth-data-with-a-moving-average-in-matlab-97193.html
             % https://www.youtube.com/watch?v=3y9GESSZmS0
 
